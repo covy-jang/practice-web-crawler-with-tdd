@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 @Service
 public class TextContentService {
     private static final int INIT_COUNT = 1;
-    private static final String REGEXP_STRING = "[-/~!@#$%^&*()_+|<>?:{}a-zA-Z0-9]";
+    private static final String REGEXP_STRING = "[-/~!@#$%^&*()_+|<>?:{}a-zA-Z0-9一-龥]";
     private static final Pattern pattern = Pattern.compile(REGEXP_STRING);
     private static final HashMap<String, Integer> usedTextCountMap = new HashMap<>();
     private static final Map<String, Map<String, Integer>> usedTextCountByUrlMap = new HashMap<>();
 
     public void addAfterCheckingValidation(String textContent) {
-        if (!validateTextContent(textContent))
+        if (validateTextContent(textContent))
             return;
         if (!usedTextCountMap.containsKey(textContent)) {
             usedTextCountMap.put(textContent, INIT_COUNT);
@@ -29,7 +29,7 @@ public class TextContentService {
     }
 
     public void addAfterCheckingValidation(String url, String textContent){
-        if(!validateTextContent(textContent))
+        if(validateTextContent(textContent))
             return;
         if(!usedTextCountByUrlMap.containsKey(url)) {
             Map<String, Integer> map = new HashMap<>();
@@ -45,16 +45,15 @@ public class TextContentService {
     }
 
     public boolean validateTextContent(String textContent) {
-        if(pattern.matcher(textContent).find())
-            return false;
-        return true;
+        return pattern.matcher(textContent).find();
     }
 
     public List<TextContentCount> getUsedTextContentList() {
-        List<TextContentCount> list = usedTextCountByUrlMap.entrySet()
+        return usedTextCountByUrlMap.entrySet()
                 .parallelStream()
                 .map(outEntry -> {
-                    List<TextContentCount> textContentCountList = outEntry.getValue().entrySet()
+                    List<TextContentCount> textContentCountList;
+                    textContentCountList = outEntry.getValue().entrySet()
                             .parallelStream()
                             .map(inEntry -> new TextContentCount(outEntry.getKey(), inEntry.getKey(), inEntry.getValue()))
                             .sorted(Comparator.comparing(TextContentCount::getUsedCount).reversed())
@@ -66,6 +65,5 @@ public class TextContentService {
                 .parallelStream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-        return list;
     }
 }

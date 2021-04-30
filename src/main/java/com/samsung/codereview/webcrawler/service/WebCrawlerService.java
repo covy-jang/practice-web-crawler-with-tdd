@@ -1,5 +1,6 @@
 package com.samsung.codereview.webcrawler.service;
 
+import com.samsung.codereview.webcrawler.domain.TextContentCount;
 import com.samsung.codereview.webcrawler.exception.InvalidUrlFormatException;
 import com.samsung.codereview.webcrawler.exception.UrlSetSizeOverException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 public class WebCrawlerService {
     private static final String TEXT_DELIMETER = " ";
+
     private TextContentService textContentService;
     private UrlAccessManageService urlAccessManageService;
 
@@ -27,9 +29,13 @@ public class WebCrawlerService {
         this.urlAccessManageService = urlAccessManageService;
     }
 
+    public List<TextContentCount> getUsedTextContentList(String url) {
+        getContentsDataFromWebDocument(url);
+        return textContentService.getUsedTextContentList();
+    }
+
     public void getContentsDataFromWebDocument(String url) {
-        log.info(String.format("[getContentsDataFromWebDocument] url : %s", url));
-        log.info(String.format("[getContentsDataFromWebDocument] count : %d", urlAccessManageService.getSizeOfUrlSet()));
+        log.info(String.format("[ContentsDataFromWebDocument] url : %s", url));
         searchContentDataAndHyperLinkWithRetrieving(url);
     }
 
@@ -47,9 +53,9 @@ public class WebCrawlerService {
             log.warn(e.getMessage());
         } catch (IOException e) {
             log.warn(e.getMessage());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.warn(e.getMessage());
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             log.warn(e.getMessage());
         }
     }
@@ -58,9 +64,9 @@ public class WebCrawlerService {
         return Jsoup.connect(url).get();
     }
 
-    public void searchContentData(String url, Document document) throws NullPointerException{
+    public void searchContentData(String url, Document document) throws NullPointerException {
         String[] texts = document.body().text().split(TEXT_DELIMETER);
-        for(String text : texts){
+        for (String text : texts) {
             textContentService.addAfterCheckingValidation(url, text);
         }
     }
