@@ -45,27 +45,22 @@ public class TextContentService {
     }
 
     public boolean validateTextContent(String textContent) {
-        if(pattern.matcher(textContent).find())
-            return false;
-        return true;
+        return !pattern.matcher(textContent).find();
     }
 
     public List<TextContentCount> getUsedTextContentList() {
-        List<TextContentCount> list = usedTextCountByUrlMap.entrySet()
+        return usedTextCountByUrlMap.entrySet()
                 .parallelStream()
-                .map(outEntry -> {
-                    List<TextContentCount> textContentCountList = outEntry.getValue().entrySet()
-                            .parallelStream()
-                            .map(inEntry -> new TextContentCount(outEntry.getKey(), inEntry.getKey(), inEntry.getValue()))
-                            .sorted(Comparator.comparing(TextContentCount::getUsedCount).reversed())
-                            .limit(5)
-                            .collect(Collectors.toList());
-                    return textContentCountList;
-                })
+                .map(outEntry -> outEntry.getValue().entrySet()
+                        .parallelStream()
+                        .map(inEntry -> new TextContentCount(outEntry.getKey(), inEntry.getKey(), inEntry.getValue()))
+                        .sorted(Comparator.comparing(TextContentCount::getUsedCount).reversed())
+                        .limit(5)
+                        .collect(Collectors.toList())
+                )
                 .collect(Collectors.toList())
                 .parallelStream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-        return list;
     }
 }

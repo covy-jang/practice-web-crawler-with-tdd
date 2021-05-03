@@ -14,12 +14,10 @@ public class UrlAccessManageService {
     private static final HashSet<String> urlSet = new HashSet<>();
 
     public boolean isUrlEmpty(String url){
-        if(urlSet.contains(url))
-            return false;
-        return true;
+        return !urlSet.contains(url);
     }
 
-    public synchronized boolean addUrl(String url) throws InvalidUrlFormatException {
+    public synchronized boolean addUrl(String url) {
         if(!isUrlHttpFormat(url))
             throw new InvalidUrlFormatException("This is Not HyperLink Url");
         if(!isCoverUrlSet())
@@ -31,9 +29,7 @@ public class UrlAccessManageService {
     }
 
     public boolean isUrlHttpFormat(String url){
-        if(!url.startsWith("http://") && !url.startsWith("https://"))
-            return false;
-        return true;
+        return url.startsWith("http://") || url.startsWith("https://");
     }
 
     public int getSizeOfUrlSet(){
@@ -41,8 +37,6 @@ public class UrlAccessManageService {
     }
 
     public boolean isCoverUrlSet(){
-        if(getSizeOfUrlSet() > COVERAGE_SIZE)
-            return false;
-        return true;
+        return getSizeOfUrlSet() <= COVERAGE_SIZE;
     }
 }

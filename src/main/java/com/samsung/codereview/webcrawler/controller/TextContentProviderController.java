@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/textContent")
@@ -19,13 +18,7 @@ public class TextContentProviderController {
 
     @Autowired
     public WebCrawlerService webCrawlerService;
-/*
-    @Autowired
-    public TextContentProviderController(TextContentService textContentService, WebCrawlerService webCrawlerService){
-        this.textContentService = textContentService;
-        this.webCrawlerService = webCrawlerService;
-    }
-*/
+
     @GetMapping("/getUsedTextContentList")
     public List<TextContentCount> getUsedTextContentList(){
         webCrawlerService.getContentsDataFromWebDocument("http://www.naver.com");

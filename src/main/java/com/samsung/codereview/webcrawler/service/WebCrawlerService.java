@@ -41,15 +41,7 @@ public class WebCrawlerService {
                 searchContentData(url, document);
                 retrieveHyperLink(searchHyperLink(document));
             }
-        } catch (UrlSetSizeOverException e) {
-            log.warn(e.getMessage());
-        } catch (InvalidUrlFormatException e) {
-            log.warn(e.getMessage());
-        } catch (IOException e) {
-            log.warn(e.getMessage());
-        }catch (NullPointerException e){
-            log.warn(e.getMessage());
-        }catch(IllegalArgumentException e){
+        } catch (UrlSetSizeOverException | InvalidUrlFormatException | IOException | NullPointerException | IllegalArgumentException e) {
             log.warn(e.getMessage());
         }
     }
@@ -58,14 +50,14 @@ public class WebCrawlerService {
         return Jsoup.connect(url).get();
     }
 
-    public void searchContentData(String url, Document document) throws NullPointerException{
+    public void searchContentData(String url, Document document) {
         String[] texts = document.body().text().split(TEXT_DELIMETER);
-        for(String text : texts){
+        for (String text : texts) {
             textContentService.addAfterCheckingValidation(url, text);
         }
     }
 
-    public boolean saveAccessedUrl(String hyperLinkUrl) throws InvalidUrlFormatException, UrlSetSizeOverException {
+    public boolean saveAccessedUrl(String hyperLinkUrl) {
         return urlAccessManageService.addUrl(hyperLinkUrl);
     }
 
@@ -78,7 +70,7 @@ public class WebCrawlerService {
         return hyperLinks;
     }
 
-    public void retrieveHyperLink(List<String> hyperLinkUrls) throws UrlSetSizeOverException {
+    public void retrieveHyperLink(List<String> hyperLinkUrls) {
         hyperLinkUrls.parallelStream()
                 .filter(url -> urlAccessManageService.isUrlEmpty(url))
                 .forEach(url -> {

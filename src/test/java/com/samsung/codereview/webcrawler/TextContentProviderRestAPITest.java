@@ -43,6 +43,6 @@ public class TextContentProviderRestAPITest {
         Gson gson = new Gson();
         List<TextContentCount> list = gson.fromJson(result.getResponse().getContentAsString(), new TypeToken<ArrayList<TextContentCount>>(){}.getType());
         assertNotNull(list);
-        assertTrue(list.stream().anyMatch(content -> content.getUrl().equals("http://www.naver.com") && content.getTextContent().equals("구독")));
     }
+
 }
