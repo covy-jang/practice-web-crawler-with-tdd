@@ -31,7 +31,7 @@ public class WebCrawlerServiceTest {
 
     @BeforeEach
     void beforeEach() throws IOException {
-        when(webCrawlerService.getDocumentFromUrl(anyString())).thenReturn(getDocumentForLocalHtml("D:/code-review-workspace/tdd-java/web-crawler/NAVER.html"));
+        when(webCrawlerService.getDocumentFromUrl(anyString())).thenReturn(getDocumentForLocalHtml("C:/code-review-workspace/webCrawlerWithTDD/NAVER.html"));
     }
 
     @Test
@@ -41,11 +41,11 @@ public class WebCrawlerServiceTest {
     }
 
 
-    static Document getDocumentForLocalHtml(String fileUrl) throws FileNotFoundException, IOException {
+    static Document getDocumentForLocalHtml(String fileUrl) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         File file = new File(fileUrl);
         FileReader fileReader = new FileReader(file);
-        int line = 0;
+        int line;
         while ((line = fileReader.read()) != -1) {
             stringBuilder.append((char) line);
         }

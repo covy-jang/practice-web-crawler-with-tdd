@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,23 +27,19 @@ public class TextContentProviderControllerTest {
     @Mock
     WebCrawlerService webCrawlerService;
 
-    @Mock
-    TextContentService textContentService;
-
     @InjectMocks
     TextContentProviderController textContentProviderController;
 
     @BeforeEach
     void beforeEach(){
-        when(textContentService.getUsedTextContentList()).thenReturn(Arrays.asList(new TextContentCount("http://www.naver.com", "네이버", 1)));
+        when(webCrawlerService.getUsedTextContentList(anyString())).thenReturn(Collections.singletonList(new TextContentCount("http://www.naver.com", "네이버", 1)));
     }
 
     @Test
     void getTextContentTest(){
         List<TextContentCount> textContentCountList = textContentProviderController.getUsedTextContentList();
         Assertions.assertNotNull(textContentCountList);
-        verify(webCrawlerService).getContentsDataFromWebDocument(anyString());
-        verify(textContentService).getUsedTextContentList();
+        verify(webCrawlerService).getUsedTextContentList(anyString());
     }
 
 }
