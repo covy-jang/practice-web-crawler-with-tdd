@@ -31,9 +31,9 @@ public class TextContentProviderControllerTestWithBDD {
     public void requestAndGetTextContentData() {
         WebCrawlerService webCrawlerService = Mockito.mock(WebCrawlerService.class);
         TextContentProviderController textContentProviderController = new TextContentProviderController(webCrawlerService);
-        when(webCrawlerService.getUsedTextContentList(anyString()))
+        when(webCrawlerService.getContentsDataFromWebDocument(anyString()))
                 .thenReturn(Collections.singletonList(new TextContentCount("http://www.naver.com", "네이버", 1)));
-        list = webCrawlerService.getUsedTextContentList("http://www.naver.com");
+        list = webCrawlerService.getContentsDataFromWebDocument("http://www.naver.com");
     }
 
     @Then("Verify Text ContentData")

@@ -31,7 +31,7 @@ public class WebCrawlerServiceTest {
 
     @BeforeEach
     void beforeEach() throws IOException {
-        when(webCrawlerService.getDocumentFromUrl(anyString())).thenReturn(getDocumentForLocalHtml("C:/code-review-workspace/webCrawlerWithTDD/NAVER.html"));
+        when(webCrawlerService.getDocumentFromUrl(anyString())).thenReturn(getDocumentForLocalHtml("D:/code-review-workspace/tdd-java/web-crawler/NAVER.html"));
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.samsung.codereview.webcrawler.service;
 
+import com.samsung.codereview.webcrawler.domain.TextContentCount;
 import com.samsung.codereview.webcrawler.exception.InvalidUrlFormatException;
 import com.samsung.codereview.webcrawler.exception.UrlSetSizeOverException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,10 +28,11 @@ public class WebCrawlerService {
         this.urlAccessManageService = urlAccessManageService;
     }
 
-    public void getContentsDataFromWebDocument(String url) {
+    public List<TextContentCount> getContentsDataFromWebDocument(String url) {
         log.info(String.format("[getContentsDataFromWebDocument] url : %s", url));
         log.info(String.format("[getContentsDataFromWebDocument] count : %d", urlAccessManageService.getSizeOfUrlSet()));
         searchContentDataAndHyperLinkWithRetrieving(url);
+        return textContentService.getUsedTextContentList();
     }
 
     public void searchContentDataAndHyperLinkWithRetrieving(String url) {

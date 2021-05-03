@@ -10,7 +10,7 @@ import java.util.HashSet;
 @Service
 @Data
 public class UrlAccessManageService {
-    private static final int COVERAGE_SIZE = 100;
+    private static final int COVERAGE_SIZE = 10;
     private static final HashSet<String> urlSet = new HashSet<>();
 
     public boolean isUrlEmpty(String url){

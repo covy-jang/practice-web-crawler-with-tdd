@@ -32,14 +32,14 @@ public class TextContentProviderControllerTest {
 
     @BeforeEach
     void beforeEach(){
-        when(webCrawlerService.getUsedTextContentList(anyString())).thenReturn(Collections.singletonList(new TextContentCount("http://www.naver.com", "네이버", 1)));
+        when(webCrawlerService.getContentsDataFromWebDocument(anyString())).thenReturn(Collections.singletonList(new TextContentCount("http://www.naver.com", "네이버", 1)));
     }
 
     @Test
     void getTextContentTest(){
         List<TextContentCount> textContentCountList = textContentProviderController.getUsedTextContentList();
         Assertions.assertNotNull(textContentCountList);
-        verify(webCrawlerService).getUsedTextContentList(anyString());
+        verify(webCrawlerService).getContentsDataFromWebDocument(anyString());
     }
 
 }

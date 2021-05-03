@@ -1,7 +1,6 @@
 package com.samsung.codereview.webcrawler.controller;
 
 import com.samsung.codereview.webcrawler.domain.TextContentCount;
-import com.samsung.codereview.webcrawler.service.TextContentService;
 import com.samsung.codereview.webcrawler.service.WebCrawlerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,16 +12,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/textContent")
 public class TextContentProviderController {
-    @Autowired
-    public TextContentService textContentService;
+    private WebCrawlerService webCrawlerService;
 
     @Autowired
-    public WebCrawlerService webCrawlerService;
+    public  TextContentProviderController(WebCrawlerService webCrawlerService){
+        this.webCrawlerService = webCrawlerService;
+    }
 
     @GetMapping("/getUsedTextContentList")
     public List<TextContentCount> getUsedTextContentList(){
-        webCrawlerService.getContentsDataFromWebDocument("http://www.naver.com");
-        return textContentService.getUsedTextContentList();
+        return webCrawlerService.getContentsDataFromWebDocument("http://www.naver.com");
     }
 
 }
